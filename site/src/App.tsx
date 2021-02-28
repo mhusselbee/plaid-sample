@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import logo from "./logo.svg";
+import { Loading } from "./components/Loading";
+import { TransactionTable } from "./components/Table";
 import { PlaidApiProvider, usePlaidApi } from "./state";
 
 const App = () => {
-  const { generatePublicToken, getTransactions } = usePlaidApi();
+  const {
+    hasToken,
+    generatePublicToken,
+    getTransactions,
+    loadingTransactions,
+  } = usePlaidApi();
+
+  useEffect(() => {
+    if (!hasToken) {
+      generatePublicToken()
+        .then(() => {
+          getTransactions().catch(console.log);
+        })
+        .catch(console.log);
+    }
+  }, [hasToken, generatePublicToken, getTransactions]);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <button onClick={generatePublicToken}> Generate Token </button>
-        <button onClick={getTransactions}> Log Transactions </button>
-      </header>
+      <div className="App-header">
+        {loadingTransactions || !hasToken ? <Loading /> : <TransactionTable />}
+      </div>
     </div>
   );
 };

@@ -2,49 +2,50 @@ import { useCallback, useState } from "react";
 import { createContainer } from "unstated-next";
 
 const usePlaidApiContainer = () => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("access_token") ?? null
-  );
+  const [token, setToken] = useState<string | null>(null);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
 
   const generatePublicToken = useCallback(async () => {
-    if (token === null) {
-      const response = await fetch("api/generate_public_token", {
-        method: "POST",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const token = await response.json();
-      console.log(token);
-      const access_response = await fetch("/api/set_access_token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        },
-        body: `public_token=${token.public_token}`,
-      });
+    const response = await fetch("api/generate_public_token", {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    const token = await response.json();
+    console.log(token);
+    const access_response = await fetch("/api/set_access_token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: `public_token=${token.public_token}`,
+    });
 
-      const data = await access_response.json();
-      console.log(data);
-      localStorage.setItem("access_token", JSON.stringify(data));
-      setToken(data.access_token);
-    }
-  }, [token]);
-
-  const getInstitutions = async () => {
-    const institutions = await fetch("api/institutions", {});
-    console.log(JSON.stringify(institutions, undefined, 2));
-  };
+    const data = await access_response.json();
+    console.log(data);
+    setToken(data.access_token);
+  }, []);
 
   const getTransactions = async () => {
-    const transactions = await (await fetch("api/transactions")).json();
-    console.log(transactions);
+    setLoadingTransactions(true);
+    try {
+      const response = await (await fetch("api/transactions")).json();
+      console.log(response.transactionsResponse.transactions);
+      setTransactions(response.transactionsResponse.transactions);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingTransactions(false);
+    }
   };
 
   return {
-    linkToken: token,
+    hasToken: token !== null,
     generatePublicToken,
-    getInstitutions,
+    transactions,
+    loadingTransactions,
     getTransactions,
   };
 };

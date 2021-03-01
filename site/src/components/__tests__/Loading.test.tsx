@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import App from "./App";
+import { Loading } from "../Loading";
 
 test("renders", () => {
-  expect(render(<App />)).toMatchSnapshot();
+  expect(render(<Loading />)).toMatchSnapshot();
 });

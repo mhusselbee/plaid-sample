@@ -1,0 +1,258 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="LoadingSpinner-module_bitsWrapper__3mbyQ"
+      >
+        <div
+          class="LoadingSpinner-module_bitsLoader__2wgB8"
+        >
+          <div
+            class="LoadingSpinner-module_bits__OwpRD"
+          >
+            <div
+              class="LoadingSpinner-module_bitsBitWrap1__3rDqw"
+            >
+              <svg
+                class="LoadingSpinner-module_bitsCircleBit__3cf_M"
+                height="6px"
+                viewBox="0 0 6 6"
+                width="6px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="3"
+                  cy="3"
+                  fill="none"
+                  r="2"
+                  stroke="#111"
+                  stroke-linecap="round"
+                  stroke-width="1"
+                />
+              </svg>
+            </div>
+            <div
+              class="LoadingSpinner-module_bitsBitWrap2__3VnxE"
+            >
+              <svg
+                class="LoadingSpinner-module_bitsLineBit__26cuU"
+                height="2px"
+                viewBox="0 0 4 1"
+                width="6px"
+              >
+                <line
+                  stroke="black"
+                  x1="0"
+                  x2="4"
+                  y1="0"
+                  y2="0"
+                />
+              </svg>
+            </div>
+            <div
+              class="LoadingSpinner-module_bitsBitWrap3__1ORn1"
+            >
+              <svg
+                class="LoadingSpinner-module_bitsPlusBit__27PNY"
+                height="6px"
+                viewBox="0 0 4 4"
+                width="6px"
+              >
+                <g>
+                  <line
+                    stroke="black"
+                    stroke-width="1"
+                    x1="0"
+                    x2="4"
+                    y1="2"
+                    y2="2"
+                  />
+                  <line
+                    stroke="black"
+                    stroke-width="1"
+                    x1="2"
+                    x2="2"
+                    y1="0"
+                    y2="4"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <svg
+            class="LoadingSpinner-module_bitsSpinner__27pGl"
+            height="48px"
+            viewBox="0 0 48 48"
+            width="48px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              class="LoadingSpinner-module_bitsPath__3pRHn"
+              cx="24"
+              cy="24"
+              fill="none"
+              r="22"
+              stroke-linecap="round"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="LoadingSpinner-module_bitsWrapper__3mbyQ"
+    >
+      <div
+        class="LoadingSpinner-module_bitsLoader__2wgB8"
+      >
+        <div
+          class="LoadingSpinner-module_bits__OwpRD"
+        >
+          <div
+            class="LoadingSpinner-module_bitsBitWrap1__3rDqw"
+          >
+            <svg
+              class="LoadingSpinner-module_bitsCircleBit__3cf_M"
+              height="6px"
+              viewBox="0 0 6 6"
+              width="6px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="3"
+                cy="3"
+                fill="none"
+                r="2"
+                stroke="#111"
+                stroke-linecap="round"
+                stroke-width="1"
+              />
+            </svg>
+          </div>
+          <div
+            class="LoadingSpinner-module_bitsBitWrap2__3VnxE"
+          >
+            <svg
+              class="LoadingSpinner-module_bitsLineBit__26cuU"
+              height="2px"
+              viewBox="0 0 4 1"
+              width="6px"
+            >
+              <line
+                stroke="black"
+                x1="0"
+                x2="4"
+                y1="0"
+                y2="0"
+              />
+            </svg>
+          </div>
+          <div
+            class="LoadingSpinner-module_bitsBitWrap3__1ORn1"
+          >
+            <svg
+              class="LoadingSpinner-module_bitsPlusBit__27PNY"
+              height="6px"
+              viewBox="0 0 4 4"
+              width="6px"
+            >
+              <g>
+                <line
+                  stroke="black"
+                  stroke-width="1"
+                  x1="0"
+                  x2="4"
+                  y1="2"
+                  y2="2"
+                />
+                <line
+                  stroke="black"
+                  stroke-width="1"
+                  x1="2"
+                  x2="2"
+                  y1="0"
+                  y2="4"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <svg
+          class="LoadingSpinner-module_bitsSpinner__27pGl"
+          height="48px"
+          viewBox="0 0 48 48"
+          width="48px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="LoadingSpinner-module_bitsPath__3pRHn"
+            cx="24"
+            cy="24"
+            fill="none"
+            r="22"
+            stroke-linecap="round"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

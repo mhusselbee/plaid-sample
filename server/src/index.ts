@@ -1,4 +1,5 @@
+import { plaidClient } from "./plaid-client";
 import { PlaidExpressServer } from "./server";
 
-
-const server = PlaidExpressServer.getInstance();
+PlaidExpressServer.construct(plaidClient);
+PlaidExpressServer.start();

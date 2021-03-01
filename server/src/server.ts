@@ -2,9 +2,11 @@
 require("dotenv").config();
 import util = require("util");
 import express = require("express");
+import { Express } from "express";
 import bodyParser = require("body-parser");
 import moment = require("moment");
 import plaid = require("plaid");
+import { plaidClient } from "./plaid-client";
 import { routes } from "./routes";
 import { GeneratePublicTokenResponse } from "./types";
 
@@ -19,24 +21,14 @@ const prettyPrintResponse = (response: any) => {
 };
 
 const APP_PORT = process.env.APP_PORT || 8000;
-const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID ?? "";
-const PLAID_SECRET = process.env.PLAID_SECRET ?? "";
-const PLAID_ENV = process.env.PLAID_ENV || "sandbox";
 const PLAID_PRODUCTS = (process.env.PLAID_PRODUCTS || "transactions").split(
   ","
 );
 
-const client = new plaid.Client({
-  clientID: PLAID_CLIENT_ID,
-  secret: PLAID_SECRET,
-  env: plaid.environments[PLAID_ENV],
-  options: {
-    version: "2019-05-29",
-  },
-});
-
 export class PlaidExpressServer {
   private static instance: PlaidExpressServer;
+  private static app: Express;
+  private static plaidClient: plaid.Client;
 
   public static getInstance() {
     if (!this.instance) {
@@ -45,18 +37,29 @@ export class PlaidExpressServer {
     return this.instance;
   }
 
-  constructor() {
-    const app = express();
+  public static construct(plaidClient: plaid.Client) {
+    this.plaidClient = plaidClient;
+    this.configure();
+  }
 
-    app.use(
+  public static start() {
+    this.app.listen(APP_PORT, () => {
+      console.log("plaid server listening on port " + APP_PORT);
+    });
+  }
+
+  private static configure() {
+    this.app = express();
+
+    this.app.use(
       bodyParser.urlencoded({
         extended: false,
       })
     );
 
-    app.use(bodyParser.json());
+    this.app.use(bodyParser.json());
 
-    app.post(routes.info, (request, response, next) => {
+    this.app.post(routes.info, (request, response, next) => {
       response.json({
         item_id: ITEM_ID,
         access_token: ACCESS_TOKEN!,
@@ -64,7 +67,7 @@ export class PlaidExpressServer {
       });
     });
 
-    app.post(routes.info, (request, response, next) => {
+    this.app.post(routes.info, (request, response, next) => {
       response.json({
         item_id: ITEM_ID!,
         access_token: ACCESS_TOKEN!,
@@ -72,9 +75,9 @@ export class PlaidExpressServer {
       });
     });
 
-    app.post(routes.setToken, (request, response, next) => {
+    this.app.post(routes.setToken, (request, response, next) => {
       PUBLIC_TOKEN = request.body.public_token;
-      client.exchangePublicToken(
+      this.plaidClient.exchangePublicToken(
         PUBLIC_TOKEN!,
         function (error, tokenResponse) {
           if (error != null) {
@@ -96,11 +99,11 @@ export class PlaidExpressServer {
     });
 
     // Retrieve Transactions for an Item
-    app.get(routes.transactions, (request, response, next) => {
+    this.app.get(routes.transactions, (request, response, next) => {
       // Pull transactions for the Item for the last 30 days
       const startDate = moment().subtract(30, "days").format("YYYY-MM-DD");
       const endDate = moment().format("YYYY-MM-DD");
-      client.getTransactions(
+      this.plaidClient.getTransactions(
         ACCESS_TOKEN!,
         startDate,
         endDate,
@@ -122,8 +125,8 @@ export class PlaidExpressServer {
       );
     });
 
-    app.post(routes.generatePublicToken, (request, response, next) => {
-      client.sandboxPublicTokenCreate(
+    this.app.post(routes.generatePublicToken, (request, response, next) => {
+      this.plaidClient.sandboxPublicTokenCreate(
         "ins_1",
         ["transactions"],
         (err: Error, result: GeneratePublicTokenResponse) => {
@@ -134,8 +137,8 @@ export class PlaidExpressServer {
       );
     });
 
-    app.post(routes.listInstitutions, (request, response, next) => {
-      client.getInstitutions(
+    this.app.post(routes.listInstitutions, (request, response, next) => {
+      this.plaidClient.getInstitutions(
         10,
         0,
         { country_codes: ["US"] },
@@ -153,34 +156,36 @@ export class PlaidExpressServer {
       );
     });
 
-    app.get(routes.balance, (request, response, next) => {
-      client.getBalance(ACCESS_TOKEN!, function (error, balanceResponse) {
-        if (error != null) {
-          prettyPrintResponse(error);
-          return response.json({
-            error,
-          });
+    this.app.get(routes.balance, (request, response, next) => {
+      this.plaidClient.getBalance(
+        ACCESS_TOKEN!,
+        function (error, balanceResponse) {
+          if (error != null) {
+            prettyPrintResponse(error);
+            return response.json({
+              error,
+            });
+          }
+          prettyPrintResponse(balanceResponse);
+          response.json(balanceResponse);
         }
-        prettyPrintResponse(balanceResponse);
-        response.json(balanceResponse);
-      });
+      );
     });
 
-    app.get(routes.accounts, (request, response, next) => {
-      client.getAccounts(ACCESS_TOKEN!, function (error, accountsResponse) {
-        if (error != null) {
-          prettyPrintResponse(error);
-          return response.json({
-            error,
-          });
+    this.app.get(routes.accounts, (request, response, next) => {
+      this.plaidClient.getAccounts(
+        ACCESS_TOKEN!,
+        function (error, accountsResponse) {
+          if (error != null) {
+            prettyPrintResponse(error);
+            return response.json({
+              error,
+            });
+          }
+          prettyPrintResponse(accountsResponse);
+          response.json(accountsResponse);
         }
-        prettyPrintResponse(accountsResponse);
-        response.json(accountsResponse);
-      });
-    });
-
-    app.listen(APP_PORT, () => {
-      console.log("plaid server listening on port " + APP_PORT);
+      );
     });
   }
 }

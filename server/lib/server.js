@@ -113,6 +113,33 @@ class PlaidExpressServer {
                 }
             });
         });
+        app.get(routes_1.routes.balance, (request, response, next) => {
+            client.getBalance(ACCESS_TOKEN, function (error, balanceResponse) {
+                if (error != null) {
+                    prettyPrintResponse(error);
+                    return response.json({
+                        error,
+                    });
+                }
+                prettyPrintResponse(balanceResponse);
+                response.json(balanceResponse);
+            });
+        });
+        app.get(routes_1.routes.accounts, (request, response, next) => {
+            client.getAccounts(ACCESS_TOKEN, function (error, accountsResponse) {
+                if (error != null) {
+                    prettyPrintResponse(error);
+                    return response.json({
+                        error,
+                    });
+                }
+                prettyPrintResponse(accountsResponse);
+                response.json(accountsResponse);
+            });
+        });
+        app.listen(APP_PORT, () => {
+            console.log("plaid server listening on port " + APP_PORT);
+        });
     }
     static getInstance() {
         if (!this.instance) {

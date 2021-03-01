@@ -1,50 +1,53 @@
-import { usePlaidApi } from "../state";
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import currencyFormatter from "currency-formatter";
+import React from "react";
+import { usePlaidApi } from "../state";
+import { useStyles } from "../state/useStyles";
+import { LoadingSpinner } from "plaid-threads";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
-
-export const TransactionTable = () => {
+export const TransactionTable = ({ accountId }: { accountId: string }) => {
   const classes = useStyles();
-  const { transactions } = usePlaidApi();
+  const { loadData } = usePlaidApi();
+  const { transactions } = loadData();
+  const relatedTransactions = transactions.filter(
+    (t) => t.account_id === accountId
+  );
 
   return transactions.length > 0 ? (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
+      <Table
+        className={classes.transactionTable}
+        aria-label="transaction table"
+      >
         <TableHead>
           <TableRow>
             <TableCell>Merchant</TableCell>
             <TableCell align="right">Amount</TableCell>
             <TableCell align="right">Date</TableCell>
-            <TableCell align="right">Account Ref</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {transactions.map((row) => (
-            <TableRow key={row.transactionId}>
+          {relatedTransactions.map((row: any) => (
+            <TableRow key={row.transaction_id}>
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+              <TableCell align="right">
+                {currencyFormatter.format(row.amount, { code: "USD" })}
+              </TableCell>
               <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.account_id}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   ) : (
-    <div />
+    <LoadingSpinner />
   );
 };

@@ -1,10 +1,14 @@
+import {
+  AccountBase,
+  AccountsGetResponse,
+  Transaction,
+  TransactionsGetResponse,
+} from "plaid/dist/api.d";
 import { useCallback, useState } from "react";
 import { createContainer } from "unstated-next";
 
 const usePlaidApiContainer = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [loadingTransactions, setLoadingTransactions] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const generatePublicToken = useCallback(async () => {
     const response = await fetch("api/generate_public_token", {
@@ -25,28 +29,62 @@ const usePlaidApiContainer = () => {
 
     const data = await access_response.json();
     console.log(data);
-    setToken(data.access_token);
   }, []);
 
-  const getTransactions = async () => {
-    setLoadingTransactions(true);
+  const fetchTransactions = async () => {
     try {
-      const response = await (await fetch("api/transactions")).json();
+      const response: {
+        transactionsResponse: TransactionsGetResponse;
+      } = await (await fetch("api/transactions")).json();
       console.log(response.transactionsResponse.transactions);
-      setTransactions(response.transactionsResponse.transactions);
+      localStorage.setItem(
+        "transactions",
+        JSON.stringify(response.transactionsResponse.transactions)
+      );
     } catch (error) {
       console.log(error);
     } finally {
-      setLoadingTransactions(false);
     }
   };
 
+  const fetchAccounts = async () => {
+    try {
+      const response: AccountsGetResponse = await (
+        await fetch("api/accounts")
+      ).json();
+      console.log(response.accounts);
+      localStorage.setItem("accounts", JSON.stringify(response.accounts));
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    localStorage.removeItem("accounts");
+    localStorage.removeItem("transactions");
+    await generatePublicToken();
+    await fetchAccounts();
+    await fetchTransactions();
+    setLoading(false);
+  };
+
+  const loadData = () => {
+    const accounts: AccountBase[] = JSON.parse(
+      localStorage.getItem("accounts")!
+    );
+    const transactions: Transaction[] = JSON.parse(
+      localStorage.getItem("transactions")!
+    );
+    return { accounts, transactions };
+  };
+
   return {
-    hasToken: token !== null,
     generatePublicToken,
-    transactions,
-    loadingTransactions,
-    getTransactions,
+    fetchData,
+    loadData,
+    loading,
   };
 };
 

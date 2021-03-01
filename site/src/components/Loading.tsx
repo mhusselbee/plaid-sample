@@ -1,18 +1,27 @@
+import { LoadingSpinner } from "plaid-threads";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 import React from "react";
-import Loader from "react-loader-spinner";
 
 export const Loading = () => {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Loader type="ThreeDots" color="#fff" height="100" width="100" />
+    <div>
+      <Card
+        style={{
+          backgroundColor: "#282c34",
+          color: "#fff",
+          alignItems: "center",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignContent: "center",
+        }}
+      >
+        <CardContent>
+          <Typography>Loading your accounts</Typography>
+        </CardContent>
+      </Card>
+      <LoadingSpinner />
     </div>
   );
 };

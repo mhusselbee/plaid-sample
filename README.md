@@ -18,6 +18,9 @@ To start the server run:
 
 `cd server && npm install && npm run build && npm start` 
 
+#### Tests
+`npm run test`
+
 ----
 
 ### Website
@@ -28,3 +31,12 @@ Run `cd npm install && npm start`
 `npm run test`
 
 
+### TODOs:
+ - Server
+   - Better unit tests; test logic
+   - Clean up plaid client implementation
+   - Add GraphQL server
+ - Front End
+   - Add assertions to snapshot tests
+   - Use data for snapshots
+   - Add GraphQL client

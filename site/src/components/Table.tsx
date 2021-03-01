@@ -41,7 +41,9 @@ export const TransactionTable = ({ accountId }: { accountId: string }) => {
               <TableCell align="right">
                 {currencyFormatter.format(row.amount, { code: "USD" })}
               </TableCell>
-              <TableCell align="right">{row.date}</TableCell>
+              <TableCell align="right">
+                {new Date(row.date).toDateString()}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
